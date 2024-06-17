@@ -1,0 +1,34 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Biodata {
+  clinicalRecords    ClinicalRecord[]
+  createdAt          DateTime         @default(now())
+  dateOfBirth        DateTime?
+  dateOfRegistration DateTime?
+  firstName          String?
+  homeAddress        String?
+  id                 String           @id @default(cuid())
+  middleName         String?
+  surname            String?
+  updatedAt          DateTime         @updatedAt
+}
+
+model ClinicalRecord {
+  biodata               Biodata?  @relation(fields: [biodataId], references: [id])
+  biodataId             String?
+  clinicDate            DateTime?
+  createdAt             DateTime  @default(now())
+  dateOfNextAppointment DateTime?
+  id                    String    @id @default(cuid())
+  medicinePrescribed    String?
+  natureOfAilment       String?
+  procedureUndertaken   String?
+  updatedAt             DateTime  @updatedAt
+}
